@@ -37,9 +37,9 @@ def convert_github():
 def upload():
     file = request.files["file"]
     vip = request.form["vipCode"]
-    if not os.path.exists("temp"):
-        os.makedirs("temp")
-    file_path = f"./temp/{file.filename}"
+    if not os.path.exists("tmp"):
+        os.makedirs("tmp")
+    file_path = f"/tmp/{file.filename}"
     file.save(file_path)
     try:
         file_url = upload_to_cloudflare(file_path=file_path, vipcode=vip)
