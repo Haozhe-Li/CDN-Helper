@@ -37,19 +37,19 @@ def convert_github():
 def upload():
     file = request.files["file"]
     vip = request.form["vipCode"]
-    if not os.path.exists("tmp"):
-        os.makedirs("tmp")
+    # if not os.path.exists("tmp"):
+    #     os.makedirs("tmp")
     file_path = f"/tmp/{file.filename}"
     file.save(file_path)
     try:
         file_url = upload_to_cloudflare(file_path=file_path, vipcode=vip)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    try:
-        # clear everything
-        os.remove(file_path)
-    except Exception as e:
-        print(f"Failed to remove file: {str(e)}")
+    # try:
+    #     # clear everything
+    #     os.remove(file_path)
+    # except Exception as e:
+    #     print(f"Failed to remove file: {str(e)}")
     return jsonify({"fileUrl": file_url})
 
 
