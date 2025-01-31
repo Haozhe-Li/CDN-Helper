@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .site-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .site-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .site-description {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f8f8;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .tab.active {
+            background: white;
+            font-weight: 600;
+            border-bottom: 2px solid #000;
+        }
+
+        .tab:hover:not(.active) {
+            background: #eee;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        .feature-description {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 6px;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feature-description h3 {
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description ul {
+            list-style-position: inside;
+            margin-top: 0.5rem;
+        }
+
+        .feature-description li {
+            margin-bottom: 0.3rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 6px;
+            display: none;
+            text-align: center;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .result-link {
+            word-break: break-all;
+            color: #000;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: #fff;
+            border: 1px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .copy-btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: #000;
+            background: #f8f8f8;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #eee;
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>window.gtranslateSettings = { "default_language": "zh-CN", "native_language_names": true, "detect_browser_language": true, "languages": ["zh-CN", "ja", "zh-TW", "en"], "wrapper_selector": ".gtranslate_wrapper" }</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <h1 class="site-title">CDN File Helper</h1>
+        <p class="site-description">Quick and easy to deploy your files using CDN.</p>
+        <!-- <p><br><div class="gtranslate_wrapper"></div></p> -->
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('github')">From Github Link</button>
+            <button class="tab" onclick="switchTab('file')">From File Upload</button>
+        </div>
+
+        <div class="content">
+            <!-- GitHub Link Panel -->
+            <div class="panel active" id="github-panel">
+                <div class="feature-description">
+                    <h3>GitHub Link Converter</h3>
+                    <p>Convert your GitHub files to CDN links effortlessly.</p>
+                    <ul>
+                        <li>One-click conversion for permanent use</li>
+                        <li>Fast delivery using JSDelivr CDN</li>
+                        <li>Easy link sharing</li>
+                        <li>Ensure your GitHub repository is public</li>
+                    </ul>
+                </div>
+                <form id="github-form" onsubmit="handleGithubSubmit(event)">
+                    <div class="form-group">
+                        <label for="github-link">Your Github Link</label>
+                        <input type="text" id="github-link" required
+                            placeholder="https://github.com/username/repo/somefiles.xxx">
+                    </div>
+                    <button type="submit" class="submit-btn">Convert</button>
+                </form>
+                <div class="loading" id="github-loading">
+                    <div class="spinner"></div>
+                    <p>Processing</p>
+                </div>
+                <div class="result" id="github-result">
+                    <p>Here's your result!</p>
+                    <p><br></p>
+                    <a href="#" class="result-link" id="github-result-link" target="_blank"></a>
+                    <button onclick="copyToClipboard('github-result-link')" class="copy-btn" id="github-copy-btn">
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <!-- File Upload Panel -->
+            <div class="panel" id="file-panel">
+                <div class="feature-description">
+                    <h3>File Uploader</h3>
+                    <p>Upload your file here and start using CDN to deliver it.</p>
+                    <ul>
+                        <li>Drag and drop to upload or click to select a file.</li>
+                        <li>Automatically generate permanent file links.</li>
+                        <li>Instant delivery using Cloudflare.</li>
+                        <li>Once uploaded, the link can be copied and shared directly.</li>
+                        <li>All tools are free! However, without a VIP code, your file may have size and storage time
+                            limitations.</li>
+                    </ul>
+                </div>
+                <form id="file-form" onsubmit="handleFileSubmit(event)">
+                    <div class="form-group">
+                        <div class="file-upload">
+                            <div class="form-group">
+                                <label for="vup-code">VIP Code (optional)</label>
+                                <input type="text" id="vip-code" placeholder="VIP Code if any">
+                            </div>
+                            <label for="file-input" class="file-upload-label">
+                                <span id="file-label">Drag and drop files here or click to upload.</span>
+                            </label>
+                            <input type="file" id="file-input" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">Upload</button>
+                </form>
+                <div class="loading" id="file-loading">
+                    <div class="spinner"></div>
+                    <p>Uploading</p>
+                </div>
+                <div class="result" id="file-result">
+                    <p>Your File is Ready!</p>
+                    <p><br></p>
+                    <a href="#" class="result-link" id="file-result-link" target="_blank"></a>
+                    <button onclick="copyToClipboard('file-result-link')" class="copy-btn" id="file-copy-btn">
+                        Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 <a href="https://haozhe.li">Haozhe Li</a>. All rights reserved.
+    </footer>
+
+    <script>
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+            const activeTab = document.querySelector(`.tab:nth-child(${tab === 'github' ? '1' : '2'})`);
+            const activePanel = document.querySelector(`#${tab}-panel`);
+
+            activeTab.classList.add('active');
+            activePanel.classList.add('active');
+        }
+
+        // Copy to clipboard functionality
+        async function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const copyBtn = document.querySelector(`#${elementId}`).nextElementSibling;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                copyBtn.textContent = '已复制!';
+                copyBtn.classList.add('copied');
+
+                setTimeout(() => {
+                    copyBtn.textContent = '复制链接';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                alert('复制失败，请手动复制');
+            }
+        }
+
+        // File input handling
+        const fileInput = document.getElementById('file-input');
+        const fileLabel = document.getElementById('file-label');
+
+        fileInput.addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name || '拖拽文件到这里或点击上传';
+            fileLabel.textContent = fileName;
+        });
+
+        // Drag and drop handling
+        const dropZone = document.querySelector('.file-upload-label');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#000';
+            dropZone.style.background = '#f8f8f8';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.background = 'white';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.background = 'white';
+
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                fileLabel.textContent = files[0].name;
+            }
+        });
+
+        // GitHub form submission
+        async function handleGithubSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('github-link');
+            const loading = document.getElementById('github-loading');
+            const result = document.getElementById('github-result');
+            const resultLink = document.getElementById('github-result-link');
+
+            loading.classList.add('show');
+            result.classList.remove('show');
+
+            try {
+                // Replace this with your actual API endpoint
+                const response = await fetch('/api/convert-github', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: input.value }),
+                });
+
+                if (!response.ok) throw new Error('Failed to convert link');
+
+                const data = await response.json();
+                resultLink.href = data.convertedUrl;
+                resultLink.textContent = data.convertedUrl;
+                result.classList.add('show');
+            } catch (error) {
+                resultLink.textContent = "Your link is invalid.";
+                result.classList.add('show');
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        // File form submission
+        async function handleFileSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('file-input');
+            const loading = document.getElementById('file-loading');
+            const result = document.getElementById('file-result');
+            const resultLink = document.getElementById('file-result-link');
+
+            if (!input.files[0]) return;
+
+            loading.classList.add('show');
+            result.classList.remove('show');
+
+            try {
+                const formData = new FormData();
+                const vipCode = document.getElementById('vip-code').value || '';
+                formData.append('vipCode', vipCode);
+                formData.append('file', input.files[0]);
+
+                // Replace this with your actual API endpoint
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error('Failed to upload file');
+
+                const data = await response.json();
+                resultLink.href = data.fileUrl;
+                resultLink.textContent = data.fileUrl;
+                result.classList.add('show');
+
+                // Reset file input
+                input.value = '';
+                fileLabel.textContent = '拖拽文件到这里或点击上传';
+            } catch (error) {
+                alert('文件上传失败，请重试');
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+    </script>
+</body>
+
+</html>
