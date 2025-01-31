@@ -43,12 +43,13 @@ def upload():
     file.save(file_path)
     try:
         file_url = upload_to_cloudflare(file_path=file_path, vipcode=vip)
-        # remove the file
-        os.remove(file_path)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    # remove whole temp folder
-    os.rmdir("temp")
+    try:
+        # clear everything
+        os.remove(file_path)
+    except Exception as e:
+        print(f"Failed to remove file: {str(e)}")
     return jsonify({"fileUrl": file_url})
 
 
