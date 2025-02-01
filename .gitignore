@@ -163,3 +163,8 @@ cython_debug/
 tests
 .DS_store
 myenv
+
+# ignore temp, tmp, and cache files
+temp/
+tmp/
+cache/
