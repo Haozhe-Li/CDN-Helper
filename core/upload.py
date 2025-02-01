@@ -1,8 +1,13 @@
+"""
+This code is inspired by the blog post:
+"使用Python掌握上传文件到Cloudflare R2：全面指南" by 迪潘卡的博客
+https://www.desinerd.com/zh-cn/p/mastering-file-uploads-cloudflare-r2-python-comprehensive-guide/
+"""
+
 import boto3
 from botocore.config import Config
 import os
 from typing import Optional
-import os
 
 s3 = boto3.client(
     "s3",
@@ -23,31 +28,30 @@ def upload_to_cloudflare(
     file_path: str, vipcode: str, object_name: Optional[str] = None
 ) -> str:
     """
-    将文件上传到Cloudflare R2，返回公共URL，并删除本地文件。
+    Uploads a file to Cloudflare R2, returns the public URL, and deletes the local file.
 
-    :param file_path: 要上传的文件路径
-    :param object_name: S3对象名称。如果未指定，则使用file_path的基本名称
-    :return: 上传文件的公共URL
+    :param file_path: Path to the file to be uploaded
+    :param vipcode: VIP code to determine the bucket
+    :param object_name: S3 object name. If not specified, the base name of file_path is used
+    :return: Public URL of the uploaded file
     """
-    # 如果未指定S3对象名称，则使用file_path的基本名称
-
-    BUCKET_NAME = BUCKET_FREE_NAME if vipcode != VIP_CODE else VIP_BUCKET_NAME
-    CLOUDFLARE_PUBLIC_URL = (
+    # Determine the bucket name and public URL based on the VIP code
+    bucket_name = BUCKET_FREE_NAME if vipcode != VIP_CODE else VIP_BUCKET_NAME
+    cloudflare_public_url = (
         CLOUDFLARE_FREE_URL if vipcode != VIP_CODE else CLOUDFLARE_VIP_URL
     )
 
+    # Use the base name of the file_path if object_name is not specified
     if object_name is None:
         object_name = os.path.basename(file_path)
 
-    print(f"上传文件到 {BUCKET_NAME}：{object_name}")
-    # 上传文件
-    s3.upload_file(file_path, BUCKET_NAME, object_name)
+    # Upload the file to the specified bucket
+    s3.upload_file(file_path, bucket_name, object_name)
 
-    # 为上传的文件生成公共URL
-    url = f"{CLOUDFLARE_PUBLIC_URL}{object_name}"
-    print(url)
+    # Generate the public URL for the uploaded file
+    url = f"{cloudflare_public_url}{object_name}"
 
-    # 删除本地文件
+    # Delete the local file
     os.remove(file_path)
 
     return url

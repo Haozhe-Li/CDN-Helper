@@ -2,22 +2,30 @@ from flask import Flask, render_template, request, jsonify
 import os
 from core.upload import upload_to_cloudflare
 
+# Initialize the Flask application
 app = Flask(__name__)
 
-
+# Define the home route
 @app.route("/")
 def home():
+    """
+    Render the home page.
+    """
     return render_template("index.html")
 
-
+# Define the route for converting GitHub URLs to jsDelivr URLs
 @app.route("/api/convert-github", methods=["POST"])
 def convert_github():
-    url = request.json["url"]
+    """
+    Convert a GitHub URL to a jsDelivr URL.
+    Expects a JSON payload with a 'url' key.
+    """
+    url = request.json.get("url")
 
+    # Validate the URL
     if url is None or not url.startswith("https://github.com"):
         return jsonify({"error": "Invalid GitHub URL"}), 400
 
-    # 解析 GitHub URL
     parts = url.split("/")
     if len(parts) < 7:
         return jsonify({"error": "Invalid GitHub URL"}), 400
@@ -27,31 +35,35 @@ def convert_github():
     branch = parts[6]
     file_path = "/".join(parts[7:])
 
-    # 转换为 jsDelivr URL
+    # Construct the jsDelivr URL
     jsdelivr_url = f"https://cdn.jsdelivr.net/gh/{user}/{repo}@{branch}/{file_path}"
 
     return jsonify({"convertedUrl": jsdelivr_url})
 
-
+# Define the route for uploading files
 @app.route("/api/upload", methods=["POST"])
 def upload():
-    file = request.files["file"]
-    vip = request.form["vipCode"]
-    # if not os.path.exists("tmp"):
-    #     os.makedirs("tmp")
-    file_path = f"/tmp/{file.filename}"
+    """
+    Upload a file to Cloudflare.
+    Expects a file and a 'vipCode' in the form data.
+    """
+    file = request.files.get("file")
+    vip = request.form.get("vipCode")
+
+    if file is None or vip is None:
+        return jsonify({"error": "File and VIP code are required"}), 400
+
+    file_path = f"/tmp/{file.filename}" # no need for cleanup, as /tmp is cleared automatically on vercel
     file.save(file_path)
+
     try:
+        # Upload the file to Cloudflare
         file_url = upload_to_cloudflare(file_path=file_path, vipcode=vip)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    # try:
-    #     # clear everything
-    #     os.remove(file_path)
-    # except Exception as e:
-    #     print(f"Failed to remove file: {str(e)}")
+
     return jsonify({"fileUrl": file_url})
 
-
+# Run the application
 if __name__ == "__main__":
     app.run(debug=True)

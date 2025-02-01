@@ -303,7 +303,7 @@
             text-decoration: underline;
         }
     </style>
-    <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","ja","zh-TW","zh-CN"],"wrapper_selector":".gtranslate_wrapper"}</script>
+    <script>window.gtranslateSettings = { "default_language": "en", "native_language_names": true, "detect_browser_language": true, "languages": ["en", "ja", "zh-TW", "zh-CN"], "wrapper_selector": ".gtranslate_wrapper" }</script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
 </head>
 
@@ -372,8 +372,11 @@
                     <div class="form-group">
                         <div class="file-upload">
                             <div class="form-group">
-                                <label for="vup-code">VIP Code (optional)</label>
+                                <label for="vip-code">VIP Code (optional)</label>
                                 <input type="text" id="vip-code" placeholder="VIP Code if any">
+                                <label>
+                                    <input type="checkbox" onclick="rememberVipCode()"> Remember the Code
+                                </label>
                             </div>
                             <label for="file-input" class="file-upload-label notranslate">
                                 <span id="file-label">Drag and drop files here or click to upload.</span>
@@ -383,6 +386,20 @@
                     </div>
                     <button type="submit" class="submit-btn">Upload</button>
                 </form>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const savedVipCode = localStorage.getItem('vipCode');
+                        if (savedVipCode) {
+                            document.getElementById('vip-code').value = savedVipCode;
+                        }
+                    });
+
+                    function rememberVipCode() {
+                        const vipCode = document.getElementById('vip-code').value;
+                        localStorage.setItem('vipCode', vipCode);
+                    }
+                </script>
                 <div class="loading" id="file-loading">
                     <div class="spinner"></div>
                     <p>Uploading</p>
@@ -401,7 +418,9 @@
 
     <footer class="footer">
         <p>&copy; 2025 <a href="https://haozhe.li">Haozhe Li</a>. All rights reserved.
-            <p><br><div class="gtranslate_wrapper"></div></p>
+        <p><br>
+        <div class="gtranslate_wrapper"></div>
+        </p>
     </footer>
 
     <script>
@@ -424,15 +443,15 @@
 
             try {
                 await navigator.clipboard.writeText(text);
-                copyBtn.textContent = '已复制!';
+                copyBtn.textContent = 'Copied!';
                 copyBtn.classList.add('copied');
 
                 setTimeout(() => {
-                    copyBtn.textContent = '复制链接';
+                    copyBtn.textContent = 'Copy link';
                     copyBtn.classList.remove('copied');
                 }, 2000);
             } catch (err) {
-                alert('复制失败，请手动复制');
+                alert('Copy failed, please copy manually.');
             }
         }
 
@@ -541,9 +560,10 @@
 
                 // Reset file input
                 input.value = '';
-                fileLabel.textContent = '拖拽文件到这里或点击上传';
+                fileLabel.textContent = 'Drag and drop files here or click to upload.';
             } catch (error) {
-                alert('文件上传失败，请重试');
+                resultLink.textContent = "Upload failed.";
+                result.classList.add('show');
             } finally {
                 loading.classList.remove('show');
             }
