@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 from core.upload import upload_to_cloudflare
-
+from core.img_convert import convert_to_webp
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -49,12 +49,18 @@ def upload():
     """
     file = request.files.get("file")
     vip = request.form.get("vipCode")
+    autoConvert = request.form.get("autoConvert")
 
     if file is None or vip is None:
         return jsonify({"error": "File and VIP code are required"}), 400
+    
 
     file_path = f"/tmp/{file.filename}" # no need for cleanup, as /tmp is cleared automatically on vercel
     file.save(file_path)
+
+    if autoConvert is not None and autoConvert == "true":
+        file_path = convert_to_webp(file_path)
+        print("converted file to webp" + file_path)
 
     try:
         # Upload the file to Cloudflare

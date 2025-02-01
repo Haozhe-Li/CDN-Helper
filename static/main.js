@@ -117,12 +117,15 @@ async function handleFileSubmit(e) {
     try {
         const formData = new FormData();
         const vipCode = document.getElementById('vip-code').value || '';
+        const autoConvert = document.getElementById('auto-convert').checked;
         // save vip code to local storage
         if (vipCode !== '') {
             localStorage.setItem('vipCode', vipCode);
+            localStorage.setItem('autoConvert', autoConvert);
         }
         formData.append('vipCode', vipCode);
         formData.append('file', input.files[0]);
+        formData.append('autoConvert', autoConvert);
 
         // Replace this with your actual API endpoint
         const response = await fetch('/api/upload', {
@@ -152,5 +155,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedVipCode = localStorage.getItem('vipCode');
     if (savedVipCode) {
         document.getElementById('vip-code').value = savedVipCode;
+        document.getElementById('auto-convert').checked = localStorage.getItem('autoConvert') === 'true';
     }
 });
