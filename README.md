@@ -1,6 +1,11 @@
-# CDN File Helper
+# CDN Helper
+[![icons](https://skillicons.dev/icons?i=flask,py,html,vercel)](#)
 
 CDN File Helper is a web application that allows users to easily upload files to Cloudflare R2 and convert GitHub URLs to jsDelivr URLs. This project is built using Flask and integrates with Cloudflare R2 for file storage.
+
+## Use it online: [cdnhelp.haozheli.com](https://cdnhelp.haozheli.com)
+
+[![Website Screenshot](https://cdn.haozheli.com/website_screenshot.webp)](https://cdnhelp.haozheli.com)
 
 ## Features
 
@@ -12,8 +17,8 @@ CDN File Helper is a web application that allows users to easily upload files to
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/cdn-file-helper.git
-    cd cdn-file-helper
+    git https://github.com/Haozhe-Li/CDN-Helper.git
+    cd cdn-helper
     ```
 
 2. Create a virtual environment and activate it:
@@ -49,18 +54,9 @@ CDN File Helper is a web application that allows users to easily upload files to
 3. Use the web interface to convert GitHub URLs to jsDelivr URLs or upload files to Cloudflare R2.
 
 ## Deployment
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FHaozhe-Li%2FCDN-Helper&env=VIP_CODE,CF_API_URL,CF_API_KEY_ID,CF_API_KEY_SECRET,CF_VIP_BUCKET,CF_FREE_BUCKET)
 
 This project is configured to be deployed on Vercel. The [vercel.json](http://_vscodecontentref_/7) file specifies the build and routing configuration.
-
-1. Install the Vercel CLI:
-    ```sh
-    npm install -g vercel
-    ```
-
-2. Deploy the project:
-    ```sh
-    vercel
-    ```
 
 ## License
 
