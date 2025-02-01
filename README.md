@@ -64,4 +64,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Acknowledgements
 
-- Inspired by the blog post ["使用Python掌握上传文件到Cloudflare R2：全面指南"](https://www.desinerd.com/zh-cn/p/mastering-file-uploads-cloudflare-r2-python-comprehensive-guide/) by 迪潘卡的博客.
+- Inspired by the blog post ["Mastering GitHub Actions for ARM Servers: A Comprehensive Guide"](https://www.desinerd.com/p/mastering-file-uploads-cloudflare-r2-python-comprehensive-guide/) by [Dipankar](https://github.com/dipankar).

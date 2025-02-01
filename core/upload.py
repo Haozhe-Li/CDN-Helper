@@ -1,7 +1,7 @@
 """
 This code is inspired by the blog post:
-"使用Python掌握上传文件到Cloudflare R2：全面指南" by 迪潘卡的博客
-https://www.desinerd.com/zh-cn/p/mastering-file-uploads-cloudflare-r2-python-comprehensive-guide/
+Mastering GitHub Actions for ARM Servers: A Comprehensive Guide by Dipankar
+https://www.desinerd.com/p/mastering-file-uploads-cloudflare-r2-python-comprehensive-guide/
 """
 
 import boto3
