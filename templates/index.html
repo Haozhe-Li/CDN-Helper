@@ -4,10 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CDN Helper</title>
+    <title>CDN Helper - Easy File Hosting with Cloudflare & jsDelivr CDN</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Upload files to Cloudflare CDN and convert GitHub links to jsDelivr CDN URLs. Fast, free and easy-to-use CDN file hosting solution.">
+    <meta name="keywords" content="CDN, Cloudflare, jsDelivr, file hosting, file upload, GitHub, web hosting">
+    <meta name="author" content="Haozhe Li">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cdnhelp.haozheli.com/">
+    <meta property="og:title" content="CDN Helper - Easy File Hosting with Cloudflare & jsDelivr CDN">
+    <meta property="og:description" content="Upload files to Cloudflare CDN and convert GitHub links to jsDelivr CDN URLs. Fast, free and easy-to-use CDN file hosting solution.">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://cdnhelp.haozheli.com/">
+    <meta name="twitter:title" content="CDN Helper - Easy File Hosting with Cloudflare & jsDelivr CDN">
+    <meta name="twitter:description" content="Upload files to Cloudflare CDN and convert GitHub links to jsDelivr CDN URLs. Fast, free and easy-to-use CDN file hosting solution.">
+
+    <link rel="canonical" href="https://cdnhelp.haozheli.com/">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    
+    <!-- Translation Widget -->
     <script>window.gtranslateSettings = { "default_language": "en", "native_language_names": true, "detect_browser_language": true, "languages": ["en", "ja", "zh-TW", "zh-CN"], "wrapper_selector": ".gtranslate_wrapper" }</script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+    
+    <!-- Vercel Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -38,9 +61,9 @@
                         <li>Easy link sharing</li>
                         <li>Ensure your GitHub repository is public</li>
                         <li>All files should use JSDelivr CDN.</li>
-                        <img src="https://cdn.jsdelivr.net/gh/Haozhe-Li/CDN-Helper@4033982bc0bcd5d6e5bede3491babe4c417c0df7/static/jsdelivr_tutorial.gif"
+                        <!-- <img src="https://cdn.jsdelivr.net/gh/Haozhe-Li/CDN-Helper@4033982bc0bcd5d6e5bede3491babe4c417c0df7/static/jsdelivr_tutorial.gif"
                             alt="GitHub Link Example"
-                            style="max-width: 100%; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            style="max-width: 100%; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"> -->
                     </ul>
                 </div>
                 <form id="github-form" onsubmit="handleGithubSubmit(event)">
@@ -77,9 +100,9 @@
                         <li>Once uploaded, the link can be copied and shared directly.</li>
                         <li>All tools are free! However, without a VIP code, your file may have size and storage time
                             limitations.</li>
-                        <img src="https://cdn.jsdelivr.net/gh/Haozhe-Li/CDN-Helper@4033982bc0bcd5d6e5bede3491babe4c417c0df7/static/cloudflare_tutorial.gif"
+                        <!-- <img src="https://cdn.jsdelivr.net/gh/Haozhe-Li/CDN-Helper@4033982bc0bcd5d6e5bede3491babe4c417c0df7/static/cloudflare_tutorial.gif"
                             alt="GitHub Link Example"
-                            style="max-width: 100%; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            style="max-width: 100%; border-radius: 8px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"> -->
                     </ul>
                 </div>
                 <form id="file-form" onsubmit="handleFileSubmit(event)">
